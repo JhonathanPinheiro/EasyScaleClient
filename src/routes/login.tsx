@@ -2,34 +2,43 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '../components/molecules/input'
-import { SelectCustom } from '../components/molecules/select'
 import AuthSchema from '../schemas/auth'
+import { useLoginMutation } from '../service/auth/use-auth-mutation'
 
 export const Route = createFileRoute('/login')({
-  component: RouteComponent,
+  component: LoginComponent,
 })
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-]
+function LoginComponent() {
+  const { mutateAsync: login, isPending } = useLoginMutation()
 
-function RouteComponent() {
   const {
-    control,
     register,
-    handleSubmit,
     formState: { errors },
-  } = useForm({
+    handleSubmit,
+  } = useForm<{
+    email: string
+    password: string
+  }>({
     resolver: zodResolver(AuthSchema.signIn),
     mode: 'all',
+  })
+
+  console.log(errors)
+
+  const onSubmit = handleSubmit(async (payload) => {
+    await login(payload)
   })
 
   return (
     <div>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit((data) => console.log(data))}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          void onSubmit(e)
+        }}
+      >
         <Input
           {...register('email')}
           label="E-mail"
@@ -42,14 +51,9 @@ function RouteComponent() {
           type="password"
           placeholder="Password"
         />
-        <SelectCustom
-          name="select"
-          control={control}
-          options={options}
-          label="Select"
-          error={errors.root?.message}
-        />
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={isPending}>
+          Submit
+        </button>
       </form>
     </div>
   )

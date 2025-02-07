@@ -8,7 +8,6 @@ const emailValidation = z
 const AuthSchema = {
   signIn: z.object({
     email: emailValidation,
-    select: z.string().min(1, { message: 'select' }),
     password: z.string().min(1, { message: 'password' }),
   }),
 

@@ -2,9 +2,9 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import { userRepository } from '../../repository/user-repository'
 import { baseQueryOptions } from '../../shared/api/query-client'
 
-export function useUserProfile() {
+export function useUserQuery() {
   return useQuery({
-    queryKey: ['user-profile'],
+    queryKey: ['user'],
     queryFn: () => userRepository.getProfile(),
     ...baseQueryOptions,
   })

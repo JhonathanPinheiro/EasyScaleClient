@@ -3,7 +3,7 @@ import { tagRepository } from '../../repository/tagRepository'
 import { baseQueryOptions } from '../../shared/api/query-client'
 import { Tag } from './tag-contracts'
 
-export function useTags() {
+export function useTagsQuery() {
   return useQuery({
     queryKey: ['tags'],
     queryFn: () => tagRepository.getAll(),

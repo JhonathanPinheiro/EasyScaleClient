@@ -3,7 +3,7 @@ import { volunteerRepository } from '../../repository/volunteerRepository'
 import { baseQueryOptions } from '../../shared/api/query-client'
 import { Volunteer } from './volunteer-contracts'
 
-export function useVolunteers() {
+export function useVolunteersQuery() {
   return useQuery({
     queryKey: ['volunteers'],
     queryFn: () => volunteerRepository.getAll(),

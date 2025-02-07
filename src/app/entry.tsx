@@ -12,8 +12,8 @@ import { Toaster } from 'react-hot-toast'
 import '../store/modals/register-modals'
 import '../store/drawers/register-drawers'
 import { queryClient } from '../shared/api/query-client'
-import { useUserQuery } from '../service/user/use-user-query'
 import { routeTree } from './route-tree.gen'
+import { useUserQuery } from '../service/user/use-user-query'
 
 const router = createRouter({
   routeTree,

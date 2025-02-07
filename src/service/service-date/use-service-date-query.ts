@@ -3,7 +3,7 @@ import { serviceDateRepository } from '../../repository/serviceDateRepository'
 import { baseQueryOptions } from '../../shared/api/query-client'
 import { ServiceDate } from './service-date-contracts'
 
-export function useServiceDates() {
+export function useServiceDatesQuery() {
   return useQuery({
     queryKey: ['service-dates'],
     queryFn: () => serviceDateRepository.getAll(),

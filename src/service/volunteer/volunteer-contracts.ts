@@ -1,8 +1,6 @@
-export type User = {
+export type Volunteer = {
   id: string
   name: string
-  email: string
-  role?: 'admin' | 'volunteer'
   tags: string[]
   availability: string[]
   createdAt: string

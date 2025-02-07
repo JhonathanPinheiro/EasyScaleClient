@@ -1,12 +1,19 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { userRepository } from '../../repository/user-repository'
 import { baseQueryOptions } from '../../shared/api/query-client'
 
-export function useUserQuery() {
+export function useUserProfile() {
   return useQuery({
-    queryKey: ['get-profile'],
-    queryFn: userRepository.getProfile,
+    queryKey: ['user-profile'],
+    queryFn: () => userRepository.getProfile(),
     ...baseQueryOptions,
-    retry: 0,
+  })
+}
+
+export function useDeleteUserMutation() {
+  return useMutation({
+    mutationKey: ['delete-user'],
+    mutationFn: (id: string) => userRepository.deleteUser(id),
+    ...baseQueryOptions,
   })
 }

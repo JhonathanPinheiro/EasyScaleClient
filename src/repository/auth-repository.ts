@@ -28,8 +28,12 @@ export const authRepository = {
       email,
       password,
     })
-    localStorage.setItem('token', response.data.token)
     return response
+  },
+
+  logout: async () => {
+    await httpClient.post('/users/logout')
+    window.location.href = '/login'
   },
 
   register: async (

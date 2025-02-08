@@ -7,6 +7,7 @@ export function useUserQuery() {
     queryKey: ['user'],
     queryFn: () => userRepository.getProfile(),
     ...baseQueryOptions,
+    retry: false,
   })
 }
 

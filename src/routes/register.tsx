@@ -25,8 +25,7 @@ function RouteComponent() {
 
   const onSubmit = handleSubmit(async (payload) => {
     await registerUser(payload, {
-      onSuccess: (res) => {
-        localStorage.setItem('token', res.token)
+      onSuccess: () => {
         appToast.success({
           title: 'User registrado',
           description: 'Usuario registrado com éxito',

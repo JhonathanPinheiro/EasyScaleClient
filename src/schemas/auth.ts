@@ -10,34 +10,12 @@ const AuthSchema = {
     email: emailValidation,
     password: z.string().min(1, { message: 'password' }),
   }),
-
-  password: z
-    .object({
-      oldPassword: z.string().min(1, { message: 'oldPassword' }),
-      newPassword: z
-        .string()
-        .regex(/^.{8,32}$/, 'characterLimit')
-        .regex(/[A-Z]/, 'capitalLetters')
-        .regex(/[a-z]/, 'smallLetters')
-        .regex(/\d/, 'oneNumber')
-        .regex(/[-#$.%&*@!~]/, 'oneSpecialCharacter'),
-    })
-    .superRefine(({ oldPassword, newPassword }, ctx) => {
-      if (newPassword !== oldPassword) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'identicalPassword',
-          path: ['oldPasswordError'],
-        })
-      }
-      if (!oldPassword) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'password',
-          path: ['passwordError'],
-        })
-      }
-    }),
+  register: z.object({
+    name: z.string().min(1, { message: 'name' }),
+    email: emailValidation,
+    password: z.string().min(1, { message: 'password' }),
+    confirmPassword: z.string().min(1, { message: 'confirmPassword' }),
+  }),
 }
 
 export default AuthSchema

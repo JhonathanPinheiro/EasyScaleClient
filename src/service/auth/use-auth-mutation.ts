@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { authRepository } from '../../repository/auth-repository'
-import { baseQueryOptions } from '../../shared/api/query-client'
+import { baseQueryOptions, queryClient } from '../../shared/api/query-client'
 
 export function useLoginMutation() {
   return useMutation({
@@ -18,13 +18,14 @@ export function useRegisterMutation() {
       name,
       email,
       password,
-      confirmPassword,
     }: {
       name: string
       email: string
       password: string
-      confirmPassword: string
-    }) => authRepository.register(name, email, password, confirmPassword),
+    }) => authRepository.register(name, email, password),
     ...baseQueryOptions,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] })
+    },
   })
 }

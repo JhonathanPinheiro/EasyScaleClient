@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '../components/molecules/input'
@@ -58,6 +58,7 @@ function LoginComponent() {
         <button type="submit" disabled={isPending}>
           Submit
         </button>
+        <Link to="/register">Register</Link>
       </form>
     </div>
   )

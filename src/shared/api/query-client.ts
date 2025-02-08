@@ -4,10 +4,11 @@ import { appToast } from '../ui/toast'
 export const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {
-      onError() {
+      onError(error: unknown) {
         appToast.error({
           title: 'Oops',
-          description: 'Something went wrong',
+          description: (error as { response?: { data?: { msg?: string } } })
+            .response?.data?.msg,
         })
       },
     },

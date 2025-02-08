@@ -14,6 +14,7 @@ import '../store/drawers/register-drawers'
 import { queryClient } from '../shared/api/query-client'
 import { routeTree } from './route-tree.gen'
 import { useUserQuery } from '../service/user/use-user-query'
+import { LoadingFullScreen } from '../shared/ui/loading-full-screen'
 
 const router = createRouter({
   routeTree,
@@ -21,7 +22,11 @@ const router = createRouter({
 })
 
 function $Entry() {
-  const { data: user } = useUserQuery()
+  const { data: user, isPending } = useUserQuery()
+
+  if (isPending) {
+    return <LoadingFullScreen />
+  }
 
   return (
     <ToastProvider>

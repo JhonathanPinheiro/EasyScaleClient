@@ -8,7 +8,7 @@ export function useAuthenticate() {
   const { isSuccess } = useUserQuery()
   useEffect(() => {
     if (isSuccess) {
-      void navigate({ to: search.redirect || '/-/welcome' })
+      void navigate({ to: search.redirect || '/welcome' })
     }
   }, [isSuccess, navigate, search])
 }

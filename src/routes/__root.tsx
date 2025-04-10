@@ -1,13 +1,12 @@
-import { type QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import NiceModal from '@ebay/nice-modal-react'
+import type { QueryClient } from '@tanstack/react-query'
 import type { User } from '../service/user/user-contracts'
 
 export const Route = createRootRouteWithContext<{
   user: User
   queryClient: QueryClient
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  preview?: any
+  preview?: unknown
 }>()({
   component: RootPage,
   notFoundComponent: NotFoundPage,
@@ -23,25 +22,23 @@ function RootPage() {
 
 function NotFoundPage() {
   return (
-    <main className="m-auto flex w-full flex-wrap justify-center bg-[#f1f1f3] px-2 pt-8">
-      <div className="relative mt-[116px] flex w-full flex-col gap-4 pt-[100px] text-center">
-        <p className="z-10 text-[56px] font-bold text-primary-700">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-muted px-4 text-center">
+      <div className="space-y-4">
+        <h1 className="text-5xl font-bold text-primary">
           Oops! Página não encontrada
-        </p>
-        <p className="z-10 m-auto max-w-[685px] text-xl font-medium text-gray-700">
-          Desculpe, mas não conseguimos encontrar a página que você estava
-          procurando. Talvez estas opções possam ajudar:
+        </h1>
+        <p className="max-w-xl text-lg text-muted-foreground">
+          Desculpe, não conseguimos encontrar a página que você estava
+          procurando. Talvez essas opções ajudem:
         </p>
 
-        <div className="z-10 flex w-full flex-col items-center justify-center gap-8 pt-28">
-          <div
+        <div className="pt-8">
+          <button
             onClick={() => window.location.reload()}
-            className="flex cursor-pointer items-center justify-center gap-2"
+            className="rounded-lg border border-primary bg-primary px-4 py-2 text-white transition hover:bg-primary/90"
           >
-            <p className="text-sm font-semibold text-primary-800">
-              Tentar novamente
-            </p>
-          </div>
+            Tentar novamente
+          </button>
         </div>
       </div>
     </main>

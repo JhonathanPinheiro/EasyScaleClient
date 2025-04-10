@@ -15,7 +15,7 @@ export default function useRouterHook() {
 
   const searchParams = location.search
 
-  const isWelcome = /[a-zA-Z0-9_-]\/welcome/.test(_pathname)
+  const isdashboard = /[a-zA-Z0-9_-]\/dashboard/.test(_pathname)
 
   const isSettings = /[a-zA-Z0-9_-]\/settings/.test(_pathname)
   const isSettingsProfile = /[a-zA-Z0-9_-]\/settings\/profile/.test(_pathname)
@@ -202,7 +202,7 @@ export default function useRouterHook() {
   return {
     pathname: _pathname,
     searchParams,
-    isWelcome,
+    isdashboard,
     isDomains: isProjectDomains ? false : isDomains,
     isDomainsTerms,
     isFunnels,

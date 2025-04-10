@@ -16,7 +16,7 @@ interface SelectTProps {
   control: Control<FieldValues>
   name: string
   label: string
-  options: Option[] // Agora recebe opções de fora
+  options: Option[]
   error?: string
 }
 

@@ -7,8 +7,8 @@ export const tagRepository = {
     return data
   },
 
-  create: async (tag: Omit<Tag, 'id'>) => {
-    const { data } = await httpClient.post('/tags', tag)
+  create: async ({ name }: { name: string }) => {
+    const { data } = await httpClient.post('/tags', { name })
     return data
   },
 

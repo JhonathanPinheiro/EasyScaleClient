@@ -15,7 +15,11 @@ import { Route as RegisterImport } from './../routes/register'
 import { Route as LoginImport } from './../routes/login'
 import { Route as AuthImport } from './../routes/_auth'
 import { Route as IndexImport } from './../routes/index'
-import { Route as AuthWelcomeImport } from './../routes/_auth/welcome'
+import { Route as AuthVolunteersImport } from './../routes/_auth/volunteers'
+import { Route as AuthTagsImport } from './../routes/_auth/tags'
+import { Route as AuthScalesImport } from './../routes/_auth/scales'
+import { Route as AuthProfileImport } from './../routes/_auth/profile'
+import { Route as AuthDashboardImport } from './../routes/_auth/dashboard'
 
 // Create/Update Routes
 
@@ -42,9 +46,33 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthWelcomeRoute = AuthWelcomeImport.update({
-  id: '/welcome',
-  path: '/welcome',
+const AuthVolunteersRoute = AuthVolunteersImport.update({
+  id: '/volunteers',
+  path: '/volunteers',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthTagsRoute = AuthTagsImport.update({
+  id: '/tags',
+  path: '/tags',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthScalesRoute = AuthScalesImport.update({
+  id: '/scales',
+  path: '/scales',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthProfileRoute = AuthProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthDashboardRoute = AuthDashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -80,11 +108,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/welcome': {
-      id: '/_auth/welcome'
-      path: '/welcome'
-      fullPath: '/welcome'
-      preLoaderRoute: typeof AuthWelcomeImport
+    '/_auth/dashboard': {
+      id: '/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthDashboardImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/profile': {
+      id: '/_auth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthProfileImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/scales': {
+      id: '/_auth/scales'
+      path: '/scales'
+      fullPath: '/scales'
+      preLoaderRoute: typeof AuthScalesImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/tags': {
+      id: '/_auth/tags'
+      path: '/tags'
+      fullPath: '/tags'
+      preLoaderRoute: typeof AuthTagsImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/volunteers': {
+      id: '/_auth/volunteers'
+      path: '/volunteers'
+      fullPath: '/volunteers'
+      preLoaderRoute: typeof AuthVolunteersImport
       parentRoute: typeof AuthImport
     }
   }
@@ -93,11 +149,19 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthRouteChildren {
-  AuthWelcomeRoute: typeof AuthWelcomeRoute
+  AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthProfileRoute: typeof AuthProfileRoute
+  AuthScalesRoute: typeof AuthScalesRoute
+  AuthTagsRoute: typeof AuthTagsRoute
+  AuthVolunteersRoute: typeof AuthVolunteersRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthWelcomeRoute: AuthWelcomeRoute,
+  AuthDashboardRoute: AuthDashboardRoute,
+  AuthProfileRoute: AuthProfileRoute,
+  AuthScalesRoute: AuthScalesRoute,
+  AuthTagsRoute: AuthTagsRoute,
+  AuthVolunteersRoute: AuthVolunteersRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -107,7 +171,11 @@ export interface FileRoutesByFullPath {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/welcome': typeof AuthWelcomeRoute
+  '/dashboard': typeof AuthDashboardRoute
+  '/profile': typeof AuthProfileRoute
+  '/scales': typeof AuthScalesRoute
+  '/tags': typeof AuthTagsRoute
+  '/volunteers': typeof AuthVolunteersRoute
 }
 
 export interface FileRoutesByTo {
@@ -115,7 +183,11 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/welcome': typeof AuthWelcomeRoute
+  '/dashboard': typeof AuthDashboardRoute
+  '/profile': typeof AuthProfileRoute
+  '/scales': typeof AuthScalesRoute
+  '/tags': typeof AuthTagsRoute
+  '/volunteers': typeof AuthVolunteersRoute
 }
 
 export interface FileRoutesById {
@@ -124,15 +196,47 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/_auth/welcome': typeof AuthWelcomeRoute
+  '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/profile': typeof AuthProfileRoute
+  '/_auth/scales': typeof AuthScalesRoute
+  '/_auth/tags': typeof AuthTagsRoute
+  '/_auth/volunteers': typeof AuthVolunteersRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/register' | '/welcome'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/profile'
+    | '/scales'
+    | '/tags'
+    | '/volunteers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/register' | '/welcome'
-  id: '__root__' | '/' | '/_auth' | '/login' | '/register' | '/_auth/welcome'
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/profile'
+    | '/scales'
+    | '/tags'
+    | '/volunteers'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/login'
+    | '/register'
+    | '/_auth/dashboard'
+    | '/_auth/profile'
+    | '/_auth/scales'
+    | '/_auth/tags'
+    | '/_auth/volunteers'
   fileRoutesById: FileRoutesById
 }
 
@@ -172,7 +276,11 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/welcome"
+        "/_auth/dashboard",
+        "/_auth/profile",
+        "/_auth/scales",
+        "/_auth/tags",
+        "/_auth/volunteers"
       ]
     },
     "/login": {
@@ -181,8 +289,24 @@ export const routeTree = rootRoute
     "/register": {
       "filePath": "register.tsx"
     },
-    "/_auth/welcome": {
-      "filePath": "_auth/welcome.tsx",
+    "/_auth/dashboard": {
+      "filePath": "_auth/dashboard.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/profile": {
+      "filePath": "_auth/profile.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/scales": {
+      "filePath": "_auth/scales.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/tags": {
+      "filePath": "_auth/tags.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/volunteers": {
+      "filePath": "_auth/volunteers.tsx",
       "parent": "/_auth"
     }
   }

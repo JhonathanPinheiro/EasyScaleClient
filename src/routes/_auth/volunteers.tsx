@@ -1,56 +1,54 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useVolunteersQuery } from '../../service/volunteer/use-volunteers-query'
-import LayoutContainer from '../../components/molecules/layout-container'
+import { createFileRoute } from "@tanstack/react-router";
+import { useVolunteersQuery } from "../../service/volunteer/use-volunteers-query";
+import LayoutContainer from "../../components/molecules/layout-container";
 import {
   useCreateVolunteerMutation,
   useDeleteVolunteerMutation,
-} from '../../service/volunteer/use-volunteers-mutation'
-import { useTagsQuery } from '../../service/tag/use-tag-query'
-import { useState } from 'react'
-import { Button, Modal, TextInput, Label } from 'flowbite-react'
-import { Trash2Icon, UserIcon } from 'lucide-react'
-import SearchSelect, {
-  FilterItem,
-} from '../../components/molecules/search-select'
+} from "../../service/volunteer/use-volunteers-mutation";
+import { useTagsQuery } from "../../service/tag/use-tag-query";
+import { useState } from "react";
+import { Button, Modal, TextInput, Label } from "flowbite-react";
+import { Trash2Icon, UserIcon } from "lucide-react";
+import type { FilterItem } from "@/components/molecules/search-select";
 
-export const Route = createFileRoute('/_auth/volunteers')({
+export const Route = createFileRoute("/_auth/volunteers")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  const { data: volunteers } = useVolunteersQuery()
-  const { data: tags } = useTagsQuery()
+  const { data: volunteers } = useVolunteersQuery();
+  const { data: tags } = useTagsQuery();
   const { mutateAsync: createVolunteer, isPending: isCreating } =
-    useCreateVolunteerMutation()
-  const { mutateAsync: deleteVolunteer } = useDeleteVolunteerMutation()
+    useCreateVolunteerMutation();
+  const { mutateAsync: deleteVolunteer } = useDeleteVolunteerMutation();
 
-  const [selectedTags, setSelectedTags] = useState<FilterItem[]>([])
-  const [selectedDates, setSelectedDates] = useState<Date[]>([])
-  const [name, setName] = useState('')
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedTags, setSelectedTags] = useState<FilterItem[]>([]);
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [name, setName] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCreateVolunteer = async () => {
-    if (!name.trim()) return
+    if (!name.trim()) return;
 
     await createVolunteer({
-      id: '',
+      id: "",
       name,
       tags: selectedTags,
       availability: selectedDates,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    })
+    });
 
-    setName('')
-    setSelectedTags([])
-    setSelectedDates([])
-    setIsModalOpen(false)
-  }
+    setName("");
+    setSelectedTags([]);
+    setSelectedDates([]);
+    setIsModalOpen(false);
+  };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja remover este voluntário?')) return
-    await deleteVolunteer(id)
-  }
+    if (!confirm("Tem certeza que deseja remover este voluntário?")) return;
+    await deleteVolunteer(id);
+  };
 
   return (
     <LayoutContainer
@@ -58,7 +56,7 @@ function RouteComponent() {
       description="Gerencie seus voluntários."
       buttonChildren={
         <Button onClick={() => setIsModalOpen(true)} disabled={isCreating}>
-          {isCreating ? 'Cadastrando...' : 'Cadastrar voluntário'}
+          {isCreating ? "Cadastrando..." : "Cadastrar voluntário"}
         </Button>
       }
     >
@@ -66,9 +64,9 @@ function RouteComponent() {
         <p className="text-muted-foreground">
           {volunteers?.length
             ? `Você tem ${volunteers.length} voluntário${
-                volunteers.length > 1 ? 's' : ''
+                volunteers.length > 1 ? "s" : ""
               } cadastrados.`
-            : 'Nenhum voluntário cadastrado.'}
+            : "Nenhum voluntário cadastrado."}
         </p>
 
         {volunteers?.length ? (
@@ -78,8 +76,8 @@ function RouteComponent() {
                 key={volunteer.id}
                 className="relative rounded-2xl border border-gray-200 shadow-sm p-5 bg-white space-y-4"
               >
-                {/* Botão de deletar */}
                 <button
+                  type="button"
                   onClick={() => handleDelete(volunteer.id)}
                   className="absolute top-3 right-3 p-1 text-gray-400 hover:text-red-600 transition cursor-pointer"
                   title="Remover voluntário"
@@ -96,8 +94,8 @@ function RouteComponent() {
                     </h3>
                     <p className="text-sm text-gray-500">
                       {volunteer.tags.length
-                        ? 'Voluntário em:'
-                        : 'Sem funções atribuídas'}
+                        ? "Voluntário em:"
+                        : "Sem funções atribuídas"}
                     </p>
                   </div>
                 </div>
@@ -124,7 +122,7 @@ function RouteComponent() {
             <br />
             Clique em <span className="font-medium">
               Cadastrar voluntário
-            </span>{' '}
+            </span>{" "}
             para adicionar um novo.
           </div>
         )}
@@ -148,17 +146,64 @@ function RouteComponent() {
 
             <div>
               <Label htmlFor="tags" value="Funções (tags)" />
-              <SearchSelect
-                filters={tags || []}
-                selectedSearchedFilters={selectedTags}
-                setSelectedSearchedFilters={setSelectedTags}
-              />
+              <div className="flex flex-col gap-2 mt-2">
+                <label className="flex items-center gap-2 text-sm font-medium">
+                  <input
+                    type="checkbox"
+                    checked={
+                      tags?.length > 0 && selectedTags.length === tags.length
+                    }
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedTags(
+                          tags.map((tag) => ({ id: tag.id, name: tag.name }))
+                        );
+                      } else {
+                        setSelectedTags([]);
+                      }
+                    }}
+                  />
+                  Todas
+                </label>
+
+                {/* Checkboxes individuais */}
+                <div className="flex flex-wrap gap-3">
+                  {tags?.map((tag) => {
+                    const isChecked = selectedTags.some((t) => t.id === tag.id);
+
+                    return (
+                      <label
+                        key={tag.id}
+                        className="flex items-center gap-2 text-sm"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedTags((prev) => [
+                                ...prev,
+                                { id: tag.id, name: tag.name },
+                              ]);
+                            } else {
+                              setSelectedTags((prev) =>
+                                prev.filter((t) => t.id !== tag.id)
+                              );
+                            }
+                          }}
+                        />
+                        {tag.name}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={handleCreateVolunteer} disabled={isCreating}>
-            {isCreating ? 'Salvando...' : 'Salvar'}
+            {isCreating ? "Salvando..." : "Salvar"}
           </Button>
           <Button color="gray" onClick={() => setIsModalOpen(false)}>
             Cancelar
@@ -166,5 +211,5 @@ function RouteComponent() {
         </Modal.Footer>
       </Modal>
     </LayoutContainer>
-  )
+  );
 }
